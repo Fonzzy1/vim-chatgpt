@@ -38,43 +38,7 @@ function! DisplayChatGPTResponse(response, finish_reason, chat_gpt_session_id)
   let response = a:response
   let finish_reason = a:finish_reason
   let chat_gpt_session_id = a:chat_gpt_session_id
-
-  if !bufexists(chat_gpt_session_id)
-    let original_syntax = &syntax
-
-    silent execute 'new '. chat_gpt_session_id
-    call setbufvar(chat_gpt_session_id, '&buftype', 'nofile')
-    call setbufvar(chat_gpt_session_id, '&bufhidden', 'hide')
-    call setbufvar(chat_gpt_session_id, '&swapfile', 0)
-    setlocal modifiable
-    setlocal wrap
-    call setbufvar(chat_gpt_session_id, '&syntax', original_syntax)
-  endif
-
-  if bufwinnr(chat_gpt_session_id) == -1
-    execute 'split ' . chat_gpt_session_id
-  endif
-
-  let last_lines = getbufline(chat_gpt_session_id, '$')
-  let last_line = empty(last_lines) ? '' : last_lines[-1]
-
-  let new_lines = substitute(last_line . response, '\n', '\r\n\r', 'g')
-
-  let lines = split(new_lines, '\n')
-
-  let clean_lines = []
-  for line in lines
-    call add(clean_lines, substitute(line, '\r', '', 'g'))
-  endfor
-
-  call setbufline(chat_gpt_session_id, '$', clean_lines)
-  call cursor('$', 1)
-
-  if finish_reason != ''
-    call setbufvar(chat_gpt_session_id, '&modifiable', 0)
-    setlocal nomodifiable
-    wincmd p
-  endif
+  echo response
 endfunction
 " Function to interact with ChatGPT
 function! ChatGPT(prompt) abort
