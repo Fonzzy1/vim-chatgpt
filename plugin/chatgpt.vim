@@ -38,7 +38,8 @@ function! DisplayChatGPTResponse(response, finish_reason, chat_gpt_session_id)
   let response = a:response
   let finish_reason = a:finish_reason
   let chat_gpt_session_id = a:chat_gpt_session_id
-  echo response
+  let winid = popup_create(response, {})
+	let bufnr = winbufnr(winid)
 endfunction
 " Function to interact with ChatGPT
 function! ChatGPT(prompt) abort
